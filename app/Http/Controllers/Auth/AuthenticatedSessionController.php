@@ -22,13 +22,21 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        // $user = User::where('USUARIO_EMAIL', $this->only('email'))->first();
 
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        // if (!$user) {
+        //     throw ValidationException::withMessages([
+        //         'email' => __('auth.failed')
+        //     ]);
+        // }
+        // if (!Hash::check($this->password, $user->USUARIO_SENHA)) {
+        //     throw ValidationException::withMessages([
+        //         'email' => __('auth.failed')
+        //     ]);
+        // }
+        // Auth::login($user);
     }
 
     /**
