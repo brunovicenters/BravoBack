@@ -15,10 +15,10 @@ class Produto extends Model
 
     public $guarded = [];
 
-    // public function Imagem()
-    // {
-    //     return $this->hasMany(Imagem::class, 'PRODUTO_ID', 'PRODUTO_ID');
-    // }
+    public function Imagem()
+    {
+        return $this->hasMany(Imagem::class, 'PRODUTO_ID', 'PRODUTO_ID');
+    }
 
     // public function Categoria()
     // {
@@ -30,8 +30,8 @@ class Produto extends Model
     //     return $this->hasMany(Pedido_Item::class, 'PRODUTO_ID', 'PRODUTO_ID');
     // }
 
-    // public function ProdutoEstoque()
-    // {
-    //     return $this->hasMany(Produto_Estoque::class, 'PRODUTO_ID', 'PRODUTO_ID');
-    // }
+    public function ProdutoEstoque()
+    {
+        return $this->hasMany(Produto_Estoque::class, 'PRODUTO_ID', 'PRODUTO_ID');
+    }
 }
