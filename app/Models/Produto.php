@@ -20,15 +20,10 @@ class Produto extends Model
         return $this->hasMany(Imagem::class, 'PRODUTO_ID', 'PRODUTO_ID');
     }
 
-    // public function Categoria()
-    // {
-    //     return $this->belongsTo(Categoria::class, 'CATEGORIA_ID', 'CATEGORIA_ID');
-    // }
-
-    // public function PedidosItem()
-    // {
-    //     return $this->hasMany(Pedido_Item::class, 'PRODUTO_ID', 'PRODUTO_ID');
-    // }
+    public function Categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'CATEGORIA_ID', 'CATEGORIA_ID');
+    }
 
     public function ProdutoEstoque()
     {
