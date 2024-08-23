@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Use $request to get the query string parameters
         $promo = true;
         $price = 25;
         $categoria = 3;
