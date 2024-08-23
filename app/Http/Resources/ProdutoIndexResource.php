@@ -15,14 +15,23 @@ class ProdutoIndexResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $isPromo = $this[0] ? true : false;
-        // $priceLimit = $this[1];
-        // $categoryId = $this[2];
+        $isPromo = isset($this['promocao']) ? true : false;
+        $priceLimit = isset($this['preco']) ? $this['preco'] : false;
+        $categoryId = isset($this['categorias']) ? $this['categorias'] : false;
 
-        $produtosQuery = Produto::query();
+        $produtosQuery = Produto::query()
+            ->where("PRODUTO_ATIVO", '=', 1);
 
         if ($isPromo) {
             $produtosQuery->where("PRODUTO_DESCONTO", '>', 0);
+        }
+
+        if ($priceLimit) {
+            $produtosQuery->where("PRODUTO_PRECO", '<=', $priceLimit);
+        }
+
+        if ($categoryId) {
+            $produtosQuery->whereIn("CATEGORIA_ID", $categoryId);
         }
 
         $produtos = $produtosQuery->get();

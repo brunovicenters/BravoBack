@@ -11,14 +11,26 @@ class ProdutoController extends Controller
 {
     public function index(Request $request)
     {
+        $search = [];
+
         // Use $request to get the query string parameters
-        $promo = true;
-        $price = 25;
-        $categoria = 3;
+        if ($request->has('promocao')) {
+            $promocao = true;
+            $search['promocao'] = $promocao;
+        }
 
-        $request = [$promo, $price, $categoria];
+        if ($request->has('preco')) {
+            $preco = $request->input('preco');
+            $search['preco'] = $preco;
+        }
 
-        return new ProdutoIndexResource($request);
+        if ($request->has('categorias')) {
+            $categorias = $request->input('categorias');
+
+            $search['categorias'] = json_decode($categorias, true);
+        }
+
+        return new ProdutoIndexResource($search);
     }
 
     public function show(Produto $produto)
