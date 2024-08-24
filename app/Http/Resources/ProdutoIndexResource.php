@@ -26,6 +26,7 @@ class ProdutoIndexResource extends JsonResource
             ->where("CATEGORIA_ATIVO", "=", 1)
             ->where("PRODUTO_ATIVO", '=', 1)
             ->where('PRODUTO_QTD', '>', 0)
+            ->where('PRODUTO_PRECO', '>', 0)
             ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO");
 
         if ($isPromo) {

@@ -26,9 +26,20 @@ class ProdutoShowResource extends JsonResource
 
         $produto = $this->resource;
 
+        if ($this->CATEGORIA_ATIVO != 1 || $this->PRODUTO_ATIVO != 1 || $this->PRODUTO_QTD <= 0 || $this->PRODUTO_PRECO <= 0 || $this->PRODUTO_PRECO <= $this->PRODUTO_DESCONTO) {
+            $produto = null;
+        }
+
         $semelhantes = Produto::with('Imagem')
-            ->where('CATEGORIA_ID', $this->CATEGORIA_ID)
-            ->where('PRODUTO_ID', '!=', $this->PRODUTO_ID)
+            ->join("PRODUTO_ESTOQUE", "PRODUTO.PRODUTO_ID", "=", "PRODUTO_ESTOQUE.PRODUTO_ID")
+            ->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
+            ->where('CATEGORIA.CATEGORIA_ID', $this->CATEGORIA_ID)
+            ->where('PRODUTO.PRODUTO_ID', '!=', $this->PRODUTO_ID)
+            ->where("CATEGORIA_ATIVO", "=", 1)
+            ->where("PRODUTO_ATIVO", '=', 1)
+            ->where('PRODUTO_QTD', '>', 0)
+            ->where('PRODUTO_PRECO', '>', 0)
+            ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO")
             ->take(5)
             ->get()->map(function ($produto) {
                 return [
