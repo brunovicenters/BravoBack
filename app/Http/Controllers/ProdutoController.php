@@ -30,6 +30,11 @@ class ProdutoController extends Controller
             $search['categorias'] = json_decode($categorias, true);
         }
 
+        if ($request->has('busca')) {
+            $busca = $request->input('busca');
+            $search['busca'] = $busca;
+        }
+
         return new ProdutoIndexResource($search);
     }
 
