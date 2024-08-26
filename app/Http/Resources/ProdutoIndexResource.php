@@ -45,7 +45,7 @@ class ProdutoIndexResource extends JsonResource
             $produtosQuery->where("PRODUTO_NOME", 'like', '%' . $produtoBuscado . '%');
         }
 
-        $produtos = $produtosQuery->get();
+        $produtos = $produtosQuery->paginate(20);
 
         return ["produtos" => $produtos];
     }
