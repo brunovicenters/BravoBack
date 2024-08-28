@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Categoria;
 use App\Models\Produto;
+use COM;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -47,6 +49,38 @@ class ProdutoIndexResource extends JsonResource
 
         $produtos = $produtosQuery->paginate(20);
 
-        return ["produtos" => $produtos];
+        $produtoMaisVendido = Produto::withCount("PedidoItem")
+            ->join('CATEGORIA', 'PRODUTO.CATEGORIA_ID', '=', 'CATEGORIA.CATEGORIA_ID')
+            ->join('PRODUTO_ESTOQUE', 'PRODUTO_ESTOQUE.PRODUTO_ID', '=', 'PRODUTO.PRODUTO_ID')
+            ->where('PRODUTO_ESTOQUE.PRODUTO_QTD', '>', 0)
+            ->where('CATEGORIA_ATIVO', '=', 1)
+            ->where('PRODUTO_ATIVO', '=', 1)
+            ->whereColumn('PRODUTO_PRECO', '>', "PRODUTO_DESCONTO")
+            ->orderBy('pedido_item_count', 'desc')
+            ->first(function ($produto) {
+                return [
+                    'id' => $produto->PRODUTO_ID,
+                    'nome' => $produto->PRODUTO_NOME,
+                    'preco' => $produto->PRODUTO_PRECO,
+                    'desconto' => $produto->PRODUTO_DESCONTO,
+                    'imagem' => $produto->Imagem[0]->IMAGEM_URL
+                ];
+            });
+
+
+        $categorias = Categoria::where('CATEGORIA_ATIVO', '=', 1)
+            ->get()
+            ->map(function ($categoria) {
+                return [
+                    'id' => $categoria->CATEGORIA_ID,
+                    'nome' => $categoria->CATEGORIA_NOME
+                ];
+            });
+
+        return [
+            "produtos" => $produtos,
+            "maisVendido" => $produtoMaisVendido,
+            "categorias" => $categorias
+        ];
     }
 }
