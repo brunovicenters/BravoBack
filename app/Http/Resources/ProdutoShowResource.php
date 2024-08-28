@@ -41,7 +41,8 @@ class ProdutoShowResource extends JsonResource
             ->where('PRODUTO_PRECO', '>', 0)
             ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO")
             ->take(5)
-            ->get()->map(function ($produto) {
+            ->get()
+            ->map(function ($produto) {
                 return [
                     'id' => $produto->PRODUTO_ID,
                     'nome' => $produto->PRODUTO_NOME,
@@ -49,7 +50,7 @@ class ProdutoShowResource extends JsonResource
                     'desconto' => $produto->PRODUTO_DESCONTO,
                     'imagem' => $produto->Imagem[0]->IMAGEM_URL,
                 ];
-            });;
+            });
 
         return [
             'produto' => $produto,
