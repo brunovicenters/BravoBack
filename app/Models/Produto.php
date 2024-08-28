@@ -29,4 +29,9 @@ class Produto extends Model
     {
         return $this->hasMany(Produto_Estoque::class, 'PRODUTO_ID', 'PRODUTO_ID');
     }
+
+    public function PedidoItem()
+    {
+        return $this->hasMany(Pedido_Item::class, 'PRODUTO_ID', 'PRODUTO_ID');
+    }
 }
