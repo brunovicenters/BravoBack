@@ -27,7 +27,7 @@ class Produto extends Model
 
     public function ProdutoEstoque()
     {
-        return $this->hasMany(Produto_Estoque::class, 'PRODUTO_ID', 'PRODUTO_ID');
+        return $this->hasOne(Produto_Estoque::class, 'PRODUTO_ID', 'PRODUTO_ID');
     }
 
     public function PedidoItem()
