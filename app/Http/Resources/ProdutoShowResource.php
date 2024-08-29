@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Carrinho;
 use Illuminate\Http\Request;
 use App\Models\Produto;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,23 +19,38 @@ class ProdutoShowResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $this->Imagem;
-        $this->Categoria;
-        $this->ProdutoEstoque;
+        $produto = Produto::with("Imagem")
+            ->join("PRODUTO_ESTOQUE", "PRODUTO.PRODUTO_ID", "=", "PRODUTO_ESTOQUE.PRODUTO_ID")
+            ->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
+            ->where("PRODUTO.PRODUTO_ID", "=", $this["produto"]->PRODUTO_ID)
+            ->where("CATEGORIA_ATIVO", "=", 1)
+            ->where("PRODUTO_ATIVO", '=', 1)
+            ->where('PRODUTO_QTD', '>', 0)
+            ->where('PRODUTO_PRECO', '>', 0)
+            ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO")
+            ->first();
 
-        // TODO: Tratar quantidade em carrinho
+        if (isset($this["user_id"])) {
+            $user = $this["user_id"];
+            if ($user) {
+                $existingItem = Carrinho::where('USUARIO_ID', $user)
+                    ->where('PRODUTO_ID', $produto->PRODUTO_ID)
+                    ->first();
 
-        $produto = $this->resource;
-
-        if ($this->CATEGORIA_ATIVO != 1 || $this->PRODUTO_ATIVO != 1 || $this->PRODUTO_QTD <= 0 || $this->PRODUTO_PRECO <= 0 || $this->PRODUTO_PRECO <= $this->PRODUTO_DESCONTO) {
-            $produto = null;
+                if ($existingItem) {
+                    $qtdAvailable = $produto->ProdutoEstoque->PRODUTO_QTD - $existingItem->ITEM_QTD;
+                } else {
+                    $qtdAvailable = $produto->ProdutoEstoque->PRODUTO_QTD;
+                }
+                $produto["qtdAvailable"] = $qtdAvailable;
+            }
         }
 
         $semelhantes = Produto::with('Imagem')
             ->join("PRODUTO_ESTOQUE", "PRODUTO.PRODUTO_ID", "=", "PRODUTO_ESTOQUE.PRODUTO_ID")
             ->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
-            ->where('CATEGORIA.CATEGORIA_ID', $this->CATEGORIA_ID)
-            ->where('PRODUTO.PRODUTO_ID', '!=', $this->PRODUTO_ID)
+            ->where('CATEGORIA.CATEGORIA_ID', $this["produto"]->CATEGORIA_ID)
+            ->where('PRODUTO.PRODUTO_ID', '!=', $this["produto"]->PRODUTO_ID)
             ->where("CATEGORIA_ATIVO", "=", 1)
             ->where("PRODUTO_ATIVO", '=', 1)
             ->where('PRODUTO_QTD', '>', 0)
@@ -54,7 +70,7 @@ class ProdutoShowResource extends JsonResource
 
         return [
             'produto' => $produto,
-            'semelhantes' => $semelhantes
+            'semelhantes' => $semelhantes,
         ];
     }
 }

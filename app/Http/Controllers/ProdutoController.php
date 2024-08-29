@@ -38,8 +38,14 @@ class ProdutoController extends Controller
         return new ProdutoIndexResource($search);
     }
 
-    public function show(Produto $produto)
+    public function show(Produto $produto, Request $request)
     {
-        return new ProdutoShowResource($produto);
+        $req["produto"] = $produto;
+
+        if ($request->has("userId")) {
+            $req["user_id"] = $request->input("userId");
+        }
+
+        return new ProdutoShowResource($req);
     }
 }
