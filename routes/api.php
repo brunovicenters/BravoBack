@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 
 // API Code
+Route::resource('/', HomeController::class)->only(['index']);
+
 
 Route::resource('produto', ProdutoController::class)->only(['index', 'show']);
 
