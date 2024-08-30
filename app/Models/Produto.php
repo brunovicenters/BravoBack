@@ -34,4 +34,32 @@ class Produto extends Model
     {
         return $this->hasMany(Pedido_Item::class, 'PRODUTO_ID', 'PRODUTO_ID');
     }
+
+    public function scopeProdutoValido($query)
+    {
+        return $query->join("PRODUTO_ESTOQUE", "PRODUTO.PRODUTO_ID", "=", "PRODUTO_ESTOQUE.PRODUTO_ID")
+            ->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
+            ->where("CATEGORIA_ATIVO", "=", 1)
+            ->where("PRODUTO_ATIVO", '=', 1)
+            ->where('PRODUTO_QTD', '>', 0)
+            ->where('PRODUTO_PRECO', '>', 0)
+            ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO");
+    }
+
+    public static function MaisVendido($limit)
+    {
+        return Produto::withCount("PedidoItem")
+            ->ProdutoValido()
+            ->orderBy('pedido_item_count', 'desc')
+            ->take($limit)
+            ->get(function ($produto) {
+                return [
+                    'id' => $produto->PRODUTO_ID,
+                    'nome' => $produto->PRODUTO_NOME,
+                    'preco' => $produto->PRODUTO_PRECO,
+                    'desconto' => $produto->PRODUTO_DESCONTO,
+                    'imagem' => $produto->Imagem[0]->IMAGEM_URL
+                ];
+            });
+    }
 }
