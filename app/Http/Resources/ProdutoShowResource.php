@@ -20,14 +20,8 @@ class ProdutoShowResource extends JsonResource
     public function toArray(Request $request): array
     {
         $produto = Produto::with("Imagem")
-            ->join("PRODUTO_ESTOQUE", "PRODUTO.PRODUTO_ID", "=", "PRODUTO_ESTOQUE.PRODUTO_ID")
-            ->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
+            ->ProdutoValido()
             ->where("PRODUTO.PRODUTO_ID", "=", $this["produto"]->PRODUTO_ID)
-            ->where("CATEGORIA_ATIVO", "=", 1)
-            ->where("PRODUTO_ATIVO", '=', 1)
-            ->where('PRODUTO_QTD', '>', 0)
-            ->where('PRODUTO_PRECO', '>', 0)
-            ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO")
             ->first();
 
         if (isset($this["user_id"])) {
@@ -47,15 +41,9 @@ class ProdutoShowResource extends JsonResource
         }
 
         $semelhantes = Produto::with('Imagem')
-            ->join("PRODUTO_ESTOQUE", "PRODUTO.PRODUTO_ID", "=", "PRODUTO_ESTOQUE.PRODUTO_ID")
-            ->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
+            ->ProdutoValido()
             ->where('CATEGORIA.CATEGORIA_ID', $this["produto"]->CATEGORIA_ID)
             ->where('PRODUTO.PRODUTO_ID', '!=', $this["produto"]->PRODUTO_ID)
-            ->where("CATEGORIA_ATIVO", "=", 1)
-            ->where("PRODUTO_ATIVO", '=', 1)
-            ->where('PRODUTO_QTD', '>', 0)
-            ->where('PRODUTO_PRECO', '>', 0)
-            ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO")
             ->take(5)
             ->get()
             ->map(function ($produto) {
