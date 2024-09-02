@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\HomeResource;
-use Illuminate\Http\Request;
+use App\Http\Resources\HomeIndexResource;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return new HomeResource(true);
+        return new HomeIndexResource(true);
     }
 }

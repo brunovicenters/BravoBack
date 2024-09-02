@@ -7,7 +7,7 @@ use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HomeResource extends JsonResource
+class HomeIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
