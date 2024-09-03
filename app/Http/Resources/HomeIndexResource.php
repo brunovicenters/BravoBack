@@ -17,12 +17,31 @@ class HomeIndexResource extends JsonResource
     public function toArray(Request $request): array
     {
         $promocao = Produto::ProdutoValido()
+            ->with('Imagem')
             ->where('PRODUTO_DESCONTO', '>', 0)
             ->orderBy('PRODUTO_DESCONTO', 'desc')
             ->take(5)
-            ->get();
+            ->get()
+            ->map(function ($produto) {
+                return [
+                    'id' => $produto->PRODUTO_ID,
+                    'nome' => $produto->PRODUTO_NOME,
+                    'preco' => $produto->PRODUTO_PRECO,
+                    'desconto' => $produto->PRODUTO_DESCONTO,
+                    'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
+                ];
+            });
 
-        $produtosMaisVendidos = Produto::MaisVendido(5);
+        $produtosMaisVendidos = Produto::MaisVendido(5)
+            ->map(function ($produto) {
+                return [
+                    'id' => $produto->PRODUTO_ID,
+                    'nome' => $produto->PRODUTO_NOME,
+                    'preco' => $produto->PRODUTO_PRECO,
+                    'desconto' => $produto->PRODUTO_DESCONTO,
+                    'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
+                ];
+            });;
 
         $categoriasMaisVendidas = Categoria::MaisVendidas(3);
 

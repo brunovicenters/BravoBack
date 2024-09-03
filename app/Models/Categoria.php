@@ -24,26 +24,35 @@ class Categoria extends Model
     public static function MaisVendidas($limit)
     {
         $maisVendidas = Produto::ProdutoValido()
-            ->selectRaw("PRODUTO.CATEGORIA_ID, SUM(PRODUTO.PRODUTO_VENDAS) as sales_qty")
+            ->selectRaw("PRODUTO.CATEGORIA_ID, CATEGORIA.CATEGORIA_NOME, SUM(PRODUTO.PRODUTO_VENDAS) as sales_qty")
             ->groupBy("PRODUTO.CATEGORIA_ID")
             ->orderBy("sales_qty", "desc")
             ->limit($limit)
             ->get();
 
+        $produtosCategorias = [];
+
         foreach ($maisVendidas as $value) {
-            $produtosCategorias[$value->CATEGORIA_ID] = Produto::ProdutoValido()
+
+            $categoria["id"] = $value->CATEGORIA_ID;
+            $categoria["nome"] = ucfirst($value->CATEGORIA_NOME);
+
+            $categoria["produtos"] = Produto::ProdutoValido()
                 ->where('PRODUTO.CATEGORIA_ID', $value->CATEGORIA_ID)
                 ->orderBy('PRODUTO_VENDAS', 'desc')
                 ->take(5)
                 ->get()
                 ->map(function ($produto) {
                     return [
-                        'PRODUTO_NOME' => $produto->PRODUTO_NOME,
-                        'PRODUTO_PRECO' => $produto->PRODUTO_PRECO,
-                        'PRODUTO_DESCONTO' => $produto->PRODUTO_DESCONTO,
-                        'IMAGEM_URL' => $produto->Imagem[0]->IMAGEM_URL
+                        'id' => $produto->PRODUTO_ID,
+                        'nome' => $produto->PRODUTO_NOME,
+                        'preco' => $produto->PRODUTO_PRECO,
+                        'desconto' => $produto->PRODUTO_DESCONTO,
+                        'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
                     ];
                 });;
+
+            $produtosCategorias[] = $categoria;
         }
 
         return $produtosCategorias;

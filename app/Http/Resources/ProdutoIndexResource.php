@@ -40,9 +40,27 @@ class ProdutoIndexResource extends JsonResource
             $produtosQuery->where("PRODUTO_NOME", 'like', '%' . $produtoBuscado . '%');
         }
 
-        $produtos = $produtosQuery->paginate(20);
+        $produtos = $produtosQuery->paginate(20)
+            ->map(function ($produto) {
+                return [
+                    'id' => $produto->PRODUTO_ID,
+                    'nome' => $produto->PRODUTO_NOME,
+                    'preco' => $produto->PRODUTO_PRECO,
+                    'desconto' => $produto->PRODUTO_DESCONTO,
+                    'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
+                ];
+            });;
 
-        $produtoMaisVendido = Produto::MaisVendido(1);
+        $produtoMaisVendido = Produto::MaisVendido(1)
+            ->map(function ($produto) {
+                return [
+                    'id' => $produto->PRODUTO_ID,
+                    'nome' => $produto->PRODUTO_NOME,
+                    'preco' => $produto->PRODUTO_PRECO,
+                    'desconto' => $produto->PRODUTO_DESCONTO,
+                    'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
+                ];
+            });;
 
 
         $categorias = Categoria::where('CATEGORIA_ATIVO', '=', 1)

@@ -50,6 +50,7 @@ class Produto extends Model
     {
         return Produto::withCount("PedidoItem")
             ->ProdutoValido()
+            ->with("Imagem")
             ->orderBy('pedido_item_count', 'desc')
             ->take($limit)
             ->get(function ($produto) {
@@ -58,7 +59,7 @@ class Produto extends Model
                     'nome' => $produto->PRODUTO_NOME,
                     'preco' => $produto->PRODUTO_PRECO,
                     'desconto' => $produto->PRODUTO_DESCONTO,
-                    'imagem' => $produto->Imagem[0]->IMAGEM_URL
+                    'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
                 ];
             });
     }
