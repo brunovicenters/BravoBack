@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 // API Code
 Route::resource('/', HomeController::class)->only(['index']);
 
+Route::post('/profile', [RegisteredUserController::class, 'store']);
 
 Route::resource('produto', ProdutoController::class)->only(['index', 'show']);
 
