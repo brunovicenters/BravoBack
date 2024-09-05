@@ -34,8 +34,10 @@ class Categoria extends Model
 
         foreach ($maisVendidas as $value) {
 
-            $categoria["id"] = $value->CATEGORIA_ID;
-            $categoria["nome"] = ucfirst($value->CATEGORIA_NOME);
+            $categoria["categoria"] = [
+                "id" => $value->CATEGORIA_ID,
+                "nome" => ucfirst($value->CATEGORIA_NOME)
+            ];
 
             $categoria["produtos"] = Produto::ProdutoValido()
                 ->where('PRODUTO.CATEGORIA_ID', $value->CATEGORIA_ID)
