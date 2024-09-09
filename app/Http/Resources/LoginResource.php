@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -32,6 +33,15 @@ class LoginResource extends JsonResource
             ]);
         }
 
-        return ['user' => $user->USUARIO_ID];
+        Auth::login($user);
+
+        return [
+            'user' => $user->USUARIO_ID,
+        ];
+    }
+
+    public function withResponse($request, $response)
+    {
+        $response->withCookie(cookie()->forever('session', session()->getId()));
     }
 }

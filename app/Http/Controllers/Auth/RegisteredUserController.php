@@ -16,7 +16,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request) //: RedirectResponse
     {
-        // dd(2);
         return new RegisterResource($request);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class RegisterResource extends JsonResource
 {
@@ -36,6 +37,18 @@ class RegisterResource extends JsonResource
             'USUARIO_SENHA' => Hash::make($request->password),
         ]);
 
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'error' => __('auth.failed')
+            ]);
+        }
+        Auth::login($user);
+
         return ['user' => $user->USUARIO_ID];
+    }
+
+    public function withResponse($request, $response)
+    {
+        $response->withCookie(cookie()->forever('session', session()->getId()));
     }
 }
