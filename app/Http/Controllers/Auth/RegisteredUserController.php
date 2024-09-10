@@ -14,8 +14,13 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request) //: RedirectResponse
+    public function store(Request $request)
     {
         return new RegisterResource($request);
+    }
+
+    public function show(Request $request)
+    {
+        return 8;
     }
 }
