@@ -39,9 +39,4 @@ class LoginResource extends JsonResource
             'user' => $user->USUARIO_ID,
         ];
     }
-
-    public function withResponse($request, $response)
-    {
-        $response->withCookie(cookie()->forever('session', session()->getId()));
-    }
 }

@@ -42,13 +42,9 @@ class RegisterResource extends JsonResource
                 'error' => __('auth.failed')
             ]);
         }
+
         Auth::login($user);
 
         return ['user' => $user->USUARIO_ID];
-    }
-
-    public function withResponse($request, $response)
-    {
-        $response->withCookie(cookie()->forever('session', session()->getId()));
     }
 }
