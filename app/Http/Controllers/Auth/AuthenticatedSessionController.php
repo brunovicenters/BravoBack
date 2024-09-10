@@ -13,4 +13,11 @@ class AuthenticatedSessionController extends Controller
         // dd(1);
         return new LoginResource($request);
     }
+
+    public function destroy(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->noContent();
+    }
 }
