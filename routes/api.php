@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 // API Code
 Route::resource('/', HomeController::class)->only(['index']);
 
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::resource('/login', AuthenticatedSessionController::class)->only(['store', 'destroy']);
 
 Route::post('/profile', [RegisteredUserController::class, 'store']);
 
@@ -19,9 +19,13 @@ Route::resource('produto', ProdutoController::class)->only(['index', 'show']);
 
 Route::resource('categoria', CategoriaController::class)->only(['index']);
 
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::resource('/profile', RegisteredUserController::class)->only(['show']);
+// });
+
 // Web Code
 
-// Route::get('/', function () {
+// Route::get('/', function () { acsum4DRVl5iwjAyu4BsOKWAeUkjNyH0gWVTFZCa
 //     return view('welcome');
 // });
 
