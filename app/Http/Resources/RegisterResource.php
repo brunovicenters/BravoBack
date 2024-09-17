@@ -20,6 +20,10 @@ class RegisterResource extends JsonResource
     {
         $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
 
+        $passConfirmation = $request->passwordConfirmation;
+
+        $request->merge(['password_confirmation' => $passConfirmation]);
+
         $request->merge(['cpf' => $cpf]);
 
         $request->validate([
