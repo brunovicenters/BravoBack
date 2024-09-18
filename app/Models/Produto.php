@@ -48,19 +48,10 @@ class Produto extends Model
 
     public static function MaisVendido($limit)
     {
-        return Produto::withCount("PedidoItem")
-            ->ProdutoValido()
+        return Produto::ProdutoValido()
             ->with("Imagem")
-            ->orderBy('pedido_item_count', 'desc')
+            ->orderBy('PRODUTO_VENDAS', 'desc')
             ->take($limit)
-            ->get(function ($produto) {
-                return [
-                    'id' => $produto->PRODUTO_ID,
-                    'nome' => $produto->PRODUTO_NOME,
-                    'preco' => $produto->PRODUTO_PRECO,
-                    'desconto' => $produto->PRODUTO_DESCONTO,
-                    'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
-                ];
-            });
+            ->get();
     }
 }
