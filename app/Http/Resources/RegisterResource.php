@@ -18,13 +18,19 @@ class RegisterResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Treating CPF
         $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
 
-        $passConfirmation = $request->passwordConfirmation;
-
-        $request->merge(['password_confirmation' => $passConfirmation]);
-
         $request->merge(['cpf' => $cpf]);
+
+        // Treating Password
+        if (!$request['password_confirmation']) {
+
+            $passConfirmation = $request->passwordConfirmation;
+
+            $request->merge(['password_confirmation' => $passConfirmation]);
+        }
+
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
