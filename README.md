@@ -105,3 +105,39 @@ The body of your request must follow this structure:
     }
 }
 ```
+
+### Register
+
+``` /profile ```
+
+**Method:**
+
+```http
+POST
+```
+
+**req:**
+
+The body of your request must follow this structure:
+
+```json
+{
+    "email": String,
+    "password": String,
+    "password_confirmation": String,
+    "cpf": String,
+    "name": String
+}
+```
+
+>You can also use "passwordConfirmation instead of "password_confirmation".
+
+**res:**
+
+```json
+{
+    "data": {
+        "user": Int
+    }
+}
+```
