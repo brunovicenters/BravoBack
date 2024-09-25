@@ -22,21 +22,38 @@ class ProdutoShowResource extends JsonResource
         $produto = Produto::with("Imagem")
             ->ProdutoValido()
             ->where("PRODUTO.PRODUTO_ID", "=", $this["produto"]->PRODUTO_ID)
+            ->get()
+            ->map(function ($produto) {
+                return [
+                    'id' => $produto->PRODUTO_ID,
+                    'nome' => $produto->PRODUTO_NOME,
+                    'preco' => $produto->PRODUTO_PRECO,
+                    'desconto' => $produto->PRODUTO_DESCONTO,
+                    'categoria' => $produto->CATEGORIA->CATEGORIA_NOME,
+                    'qtd' => $produto->ProdutoEstoque->PRODUTO_QTD,
+                    'desc' => $produto->PRODUTO_DESCRICAO,
+                    'imagem' => $produto->Imagem->map(function ($imagem) {
+                        return [
+                            'url' => $imagem->IMAGEM_URL,
+                        ];
+                    }),
+                ];
+            })
             ->first();
 
         if (isset($this["user_id"])) {
             $user = $this["user_id"];
             if ($user) {
                 $existingItem = Carrinho::where('USUARIO_ID', $user)
-                    ->where('PRODUTO_ID', $produto->PRODUTO_ID)
+                    ->where('PRODUTO_ID', $produto["id"])
                     ->first();
 
                 if ($existingItem) {
-                    $qtdAvailable = $produto->ProdutoEstoque->PRODUTO_QTD - $existingItem->ITEM_QTD;
+                    $qtdAvailable = $produto["qtd"] - $existingItem->ITEM_QTD;
                 } else {
-                    $qtdAvailable = $produto->ProdutoEstoque->PRODUTO_QTD;
+                    $qtdAvailable = $produto["qtd"];
                 }
-                $produto["qtdAvailable"] = $qtdAvailable;
+                $produto["qtd"] = $qtdAvailable;
             }
         }
 

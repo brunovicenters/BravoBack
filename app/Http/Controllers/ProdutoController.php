@@ -42,8 +42,8 @@ class ProdutoController extends Controller
     {
         $req["produto"] = $produto;
 
-        if ($request->has("userId")) {
-            $req["user_id"] = $request->input("userId");
+        if ($request["user"]) {
+            $req["user_id"] = intval($request["user"]);
         }
 
         return new ProdutoShowResource($req);
