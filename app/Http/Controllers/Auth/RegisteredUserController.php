@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProfileShowResource;
 use App\Http\Resources\RegisterResource;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
-
+use PhpParser\Node\Expr\Throw_;
 
 class RegisteredUserController extends Controller
 {
@@ -19,8 +21,18 @@ class RegisteredUserController extends Controller
         return new RegisterResource($request);
     }
 
-    public function show(Request $request)
+    public function show(Request $request, int $id)
     {
-        return 8;
+        if (!$id) {
+            throw new \Exception("Para mostrar o perfil, informe o ID do usuário");
+        }
+
+        $user = Usuario::where('USUARIO_ID', $id)->first();
+
+        if ($user == null) {
+            throw new \Exception("Usuário não encontrado!");
+        }
+
+        return ProfileShowResource::make($user);
     }
 }

@@ -12,7 +12,7 @@ Route::resource('/', HomeController::class)->only(['index']);
 
 Route::resource('/login', AuthenticatedSessionController::class)->only(['store', 'destroy']);
 
-Route::resource('/profile', RegisteredUserController::class)->only(['store', 'show']);
+Route::resource('/profile', RegisteredUserController::class)->only(['store', 'show', 'update', 'destroy']);
 
 Route::resource('produto', ProdutoController::class)->only(['index', 'show']);
 
