@@ -10,7 +10,6 @@ class AuthenticatedSessionController extends Controller
 {
     public function store(Request $request)
     {
-        // dd(1);
         return new LoginResource($request);
     }
 
