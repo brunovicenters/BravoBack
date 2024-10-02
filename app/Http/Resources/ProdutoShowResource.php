@@ -31,7 +31,7 @@ class ProdutoShowResource extends JsonResource
                     'desconto' => $produto->PRODUTO_DESCONTO,
                     'categoria' => $produto->CATEGORIA->CATEGORIA_NOME,
                     'qtd' => $produto->ProdutoEstoque->PRODUTO_QTD,
-                    'desc' => $produto->PRODUTO_DESCRICAO,
+                    'desc' => $produto->PRODUTO_DESC,
                     'imagem' => $produto->Imagem->map(function ($imagem) {
                         return [
                             'url' => $imagem->IMAGEM_URL,
