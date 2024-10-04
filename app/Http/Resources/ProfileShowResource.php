@@ -52,7 +52,7 @@ class ProfileShowResource extends JsonResource
 
         return [
             'user' => $user,
-            'compreNovamente' => $compreNovamente
+            'compreNovamente' => $compreNovamente ?? [],
         ];
     }
 }
