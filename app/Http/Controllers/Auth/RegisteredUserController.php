@@ -27,6 +27,16 @@ class RegisteredUserController extends Controller
             throw new \Exception("Para mostrar o perfil, informe o ID do usuário");
         }
 
+        if (!is_numeric($id)) {
+            throw new \Exception("ID inválido");
+        }
+
+        $user = Usuario::where("USUARIO_ID", $id)->first();
+
+        if ($user != null && $user->USUARIO_ID != $request->header("user")) {
+            throw new \Exception("Operação inválida, você precisa estar logado em sua conta");
+        }
+
         $user = Usuario::where('USUARIO_ID', $id)->first();
 
         if ($user == null) {
