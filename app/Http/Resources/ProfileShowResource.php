@@ -39,6 +39,8 @@ class ProfileShowResource extends JsonResource
             $compreNovamente = Produto::ProdutoValido()
                 ->whereIn('PRODUTO.PRODUTO_ID', $arrayItensId)
                 ->get()
+                ->reverse()
+                ->values()
                 ->map(function ($produto) {
                     return [
                         'id' => $produto->PRODUTO_ID,
@@ -48,6 +50,8 @@ class ProfileShowResource extends JsonResource
                         'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
                     ];
                 });
+
+            $compreNovamente = $compreNovamente->take(10);
         }
 
         return [
