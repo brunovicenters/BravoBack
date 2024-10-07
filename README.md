@@ -38,6 +38,14 @@ Each middleware used in this project is listed below, along with a detailed expl
 
 &rArr; The AuthUser Middleware checks for the presence of a header parameter named user. The value of this parameter should correspond to a valid user ID from the database.
 
+**header:**
+
+```json
+{
+    "user": Int
+}
+```
+
 ## Routes
 
 Here you will see all the available routes and it's returns. The base URL is: [https://vicentedev.com.br/api/](http://vicentedev.com.br/api/)
