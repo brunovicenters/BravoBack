@@ -30,6 +30,31 @@ The API has some common Models that appears in our responses, so, for convenienc
 }
 ```
 
+### Imagem
+
+```json
+{
+    "url": String
+}
+```
+
+### Product Details
+
+```json
+{
+    "id": Int,
+    "nome": String,
+    "preco": String,
+    "desconto": String,
+    "categoria": String,
+    "qtd": Int,
+    "desc": String,
+    "imagem": [
+        Imagem
+    ]
+}
+```
+
 ## Middlewares
 
 Each middleware used in this project is listed below, along with a detailed explanation of its functionality and usage. To enhance readability, each middleware is represented by a unique badge. When a route includes a specific middleware, its corresponding badge will be displayed at the top of the section, providing a clear visual indication.
@@ -162,7 +187,7 @@ The body of your request must follow this structure:
 
 ![AuthUser](https://img.shields.io/badge/AuthUser-yellow)
 
-``` /profile/{} ```
+``` /profile/{id} ```
 
 **Method:**
 
@@ -180,6 +205,8 @@ The body of your request must follow this structure:
 
 **res:**
 
+- `Product` model can be found in the [Product](#product) section.
+
 ```json
 {
     "data": {
@@ -190,6 +217,45 @@ The body of your request must follow this structure:
             "cpf": String
         },
         "compreNovamente": [
+            Product
+        ]
+    }
+}
+```
+
+### Show Product
+
+``` /produto/{id}?user={user_id} ```
+
+To get a more precisive available quantity, you can include the logged user's id to the query string, so you get the quantity available in the database less the quantity the user has in it's shopcart.
+
+**Method:**
+
+```http
+GET
+```
+
+**req:**
+
+The body of your request must follow this structure:
+
+```json
+{}
+```
+
+**res:**
+
+- `Product Details` model can be found in the [Product Details](#product-details) section.
+
+- `Product` model can be found in the [Product](#product) section.
+
+```json
+{
+    "data": {
+        "produto": {
+            Product Details
+        },
+        "semelhantes": [
             Product
         ]
     }
