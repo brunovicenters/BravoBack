@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CarrinhoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
@@ -21,6 +22,8 @@ Route::resource('/categoria', CategoriaController::class)->only(['index']);
 
 Route::middleware([AuthUser::class])->group(function () {
     Route::resource('/profile', RegisteredUserController::class)->only(['show', 'update', 'destroy']);
+
+    Route::resource('/carrinho', CarrinhoController::class)->only(['index', 'store', 'destroy']);
 });
 
 require __DIR__ . '/auth.php';
