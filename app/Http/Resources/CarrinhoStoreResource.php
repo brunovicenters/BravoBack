@@ -42,7 +42,7 @@ class CarrinhoStoreResource extends JsonResource
             ->where('PRODUTO_ID', $this["PRODUTO_ID"])
             ->first();
 
-        if ($existingItem->count() > 0) {
+        if ($existingItem) {
             $produto = Produto_Estoque::where('PRODUTO_ID', $existingItem["PRODUTO_ID"])
                 ->where('PRODUTO_QTD', '>=', ($this["ITEM_QTD"] + $existingItem["ITEM_QTD"]))
                 ->first();

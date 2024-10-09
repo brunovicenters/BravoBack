@@ -16,16 +16,18 @@ class AuthUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->header("user", null)) {
-            throw new \Exception("Operação inválida, você precisa estar logado");
+        if (!$request->hasHeader("user")) {
+            throw new \Exception("Operação inválida, você precisa estar logado!");
         }
 
         if (!is_numeric($request->header("user"))) {
-            throw new \Exception("Operação inválida, você precisa estar logado");
+            throw new \Exception("Operação inválida, você precisa passar um id válido");
         }
 
-        if (Usuario::where("USUARIO_ID", $request->header("user"))->count() == 0) {
-            throw new \Exception("Operação inválida, usuário inexistente");
+        $user = Usuario::where("USUARIO_ID", $request->header("user"))->first();
+
+        if (!$user->USUARIO_NOME) {
+            throw new \Exception("Usuário inexistente!");
         }
 
         return $next($request);
