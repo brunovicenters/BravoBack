@@ -261,3 +261,34 @@ The body of your request must follow this structure:
     }
 }
 ```
+
+### Store Cart
+
+``` /profile ```
+
+**Method:**
+
+```http
+POST
+```
+
+**req:**
+
+The body of your request must follow this structure:
+
+```json
+{
+    "produtoId": Int,
+    "quantity": Int,
+}
+```
+
+**res:**
+
+```json
+{
+    "data": {
+        "msg": String
+    }
+}
+```
