@@ -26,7 +26,7 @@ class AuthUser
 
         $user = Usuario::where("USUARIO_ID", $request->header("user"))->first();
 
-        if (!$user->USUARIO_NOME) {
+        if ($user == null) {
             throw new \Exception("Usuário inexistente!");
         }
 
