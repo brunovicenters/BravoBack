@@ -23,7 +23,7 @@ Route::resource('/categoria', CategoriaController::class)->only(['index']);
 Route::middleware([AuthUser::class])->group(function () {
     Route::resource('/profile', RegisteredUserController::class)->only(['show', 'update', 'destroy']);
 
-    Route::resource('/carrinho', CarrinhoController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('/carrinho', CarrinhoController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__ . '/auth.php';
