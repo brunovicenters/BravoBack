@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Produto;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use function PHPUnit\Framework\isEmpty;
+
 class ProdutoShowResource extends JsonResource
 {
     /**
@@ -32,11 +34,11 @@ class ProdutoShowResource extends JsonResource
                     'categoria' => $produto->CATEGORIA->CATEGORIA_NOME,
                     'qtd' => $produto->ProdutoEstoque->PRODUTO_QTD,
                     'desc' => $produto->PRODUTO_DESC,
-                    'imagem' => $produto->Imagem->map(function ($imagem) {
+                    'imagem' => $produto->Imagem ? $produto->Imagem->map(function ($imagem) {
                         return [
                             'url' => $imagem->IMAGEM_URL,
                         ];
-                    }),
+                    }) : [],
                 ];
             })
             ->first();
@@ -69,7 +71,7 @@ class ProdutoShowResource extends JsonResource
                     'nome' => $produto->PRODUTO_NOME,
                     'preco' => $produto->PRODUTO_PRECO,
                     'desconto' => $produto->PRODUTO_DESCONTO,
-                    'imagem' => $produto->Imagem[0]->IMAGEM_URL,
+                    'imagem' => !isEmpty($produto->Imagem) ? $produto->Imagem[0]->IMAGEM_URL : "",
                 ];
             });
 
