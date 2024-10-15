@@ -34,7 +34,7 @@ class ProdutoShowResource extends JsonResource
                     'categoria' => $produto->CATEGORIA->CATEGORIA_NOME,
                     'qtd' => $produto->ProdutoEstoque->PRODUTO_QTD,
                     'desc' => $produto->PRODUTO_DESC,
-                    'imagem' => $produto->Imagem ? $produto->Imagem->map(function ($imagem) {
+                    'imagem' => count($produto->Imagem) > 0 ? $produto->Imagem->map(function ($imagem) {
                         return [
                             'url' => $imagem->IMAGEM_URL,
                         ];
