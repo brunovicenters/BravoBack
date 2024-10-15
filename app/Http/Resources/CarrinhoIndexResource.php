@@ -30,7 +30,7 @@ class CarrinhoIndexResource extends JsonResource
                     'name' => $item->PRODUTO_NOME,
                     'quantity' => $item->ITEM_QTD,
                     'price' => $item->PRODUTO_PRECO,
-                    'image' => $item->IMAGEM->first()->IMAGEM_URL
+                    'image' => $item->IMAGEM->first()->IMAGEM_URL ?? null
                 ];
             });
 
