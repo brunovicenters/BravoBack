@@ -44,7 +44,7 @@ class ProdutoShowResource extends JsonResource
             })
             ->first();
 
-        if (isset($this["user_id"])) {
+        if (isset($this["user_id"]) && $produto != null) {
             $user = $this["user_id"];
             if ($user) {
                 $existingItem = Carrinho::where('USUARIO_ID', $user)
