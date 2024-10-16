@@ -37,11 +37,9 @@ class Produto extends Model
 
     public function scopeProdutoValido($query)
     {
-        return $query->join("PRODUTO_ESTOQUE", "PRODUTO.PRODUTO_ID", "=", "PRODUTO_ESTOQUE.PRODUTO_ID")
-            ->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
+        return $query->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")
             ->where("CATEGORIA_ATIVO", "=", 1)
             ->where("PRODUTO_ATIVO", '=', 1)
-            ->where('PRODUTO_QTD', '>', 0)
             ->where('PRODUTO_PRECO', '>', 0)
             ->whereColumn("PRODUTO_PRECO", ">", "PRODUTO_DESCONTO");
     }

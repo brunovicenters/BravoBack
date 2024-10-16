@@ -33,6 +33,7 @@ class ProdutoShowResource extends JsonResource
                     'desconto' => $produto->PRODUTO_DESCONTO,
                     'categoria' => $produto->CATEGORIA->CATEGORIA_NOME,
                     'qtd' => $produto->ProdutoEstoque->PRODUTO_QTD,
+                    'qtdDisponivel' => $produto->ProdutoEstoque->PRODUTO_QTD,
                     'desc' => $produto->PRODUTO_DESC,
                     'imagem' => count($produto->Imagem) > 0 ? $produto->Imagem->map(function ($imagem) {
                         return [
@@ -51,11 +52,8 @@ class ProdutoShowResource extends JsonResource
                     ->first();
 
                 if ($existingItem) {
-                    $qtdAvailable = $produto["qtd"] - $existingItem->ITEM_QTD;
-                } else {
-                    $qtdAvailable = $produto["qtd"];
+                    $produto["qtdDisponivel"] = $produto["qtd"] - $existingItem->ITEM_QTD;
                 }
-                $produto["qtd"] = $qtdAvailable;
             }
         }
 
