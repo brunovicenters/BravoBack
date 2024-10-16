@@ -69,7 +69,7 @@ class ProdutoShowResource extends JsonResource
                     'nome' => $produto->PRODUTO_NOME,
                     'preco' => $produto->PRODUTO_PRECO,
                     'desconto' => $produto->PRODUTO_DESCONTO,
-                    'imagem' => !isEmpty($produto->Imagem) ? $produto->Imagem[0]->IMAGEM_URL : null,
+                    'imagem' => !isEmpty($produto->Imagem) || $produto->Imagem ? $produto->Imagem[0]->IMAGEM_URL : null,
                 ];
             });
 
