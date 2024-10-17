@@ -27,7 +27,7 @@ class CarrinhoIndexResource extends JsonResource
             ->get()
             ->map(function ($item) {
 
-                if ($item->PRODUTO_QTD <= 0) {
+                if ($item->PRODUTO_QTD <= 0 || $item->ITEM_QTD <= 0 || $item->PRODUTO_QTD == null) {
                     Carrinho::where('PRODUTO_ID', $item->PRODUTO_ID)->delete();
                     return;
                 }
