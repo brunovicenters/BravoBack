@@ -26,15 +26,29 @@ class CarrinhoIndexResource extends JsonResource
             ->where('CARRINHO_ITEM.USUARIO_ID', $id)
             ->get()
             ->map(function ($item) {
+
+                if ($item->PRODUTO_QTD <= 0) {
+                    Carrinho::where('PRODUTO_ID', $item->PRODUTO_ID)->delete();
+                    return;
+                }
+
+                $changed = false;
+                if ($item->ITEM_QTD > $item->PRODUTO_QTD) {
+                    $item->ITEM_QTD = $item->PRODUTO_QTD;
+                    $item->save();
+                    $changed = true;
+                }
+
                 return [
                     'id' => $item->PRODUTO_ID,
                     'name' => $item->PRODUTO_NOME,
                     'quantity' => $item->ITEM_QTD,
                     'stock' => $item->PRODUTO_QTD,
-                    'price' => $item->PRODUTO_PRECO,
-                    'image' => $item->IMAGEM->first()->IMAGEM_URL ?? null
+                    'price' => ($item->PRODUTO_PRECO - $item->PRODUTO_DESCONTO) * $item->ITEM_QTD,
+                    'image' => $item->IMAGEM->first()->IMAGEM_URL ?? null,
+                    'changedQty' => $changed
                 ];
-            });
+            })->filter();
 
         return [
             'carrinho' => $produtos
