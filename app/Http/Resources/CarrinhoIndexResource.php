@@ -21,6 +21,7 @@ class CarrinhoIndexResource extends JsonResource
 
         $produtos = Produto::with("Imagem")
             ->ProdutoValido()
+            ->join('PRODUTO_ESTOQUE', 'PRODUTO.PRODUTO_ID', '=', 'PRODUTO_ESTOQUE.PRODUTO_ID')
             ->join('CARRINHO_ITEM', 'PRODUTO.PRODUTO_ID', '=', 'CARRINHO_ITEM.PRODUTO_ID')
             ->where('CARRINHO_ITEM.USUARIO_ID', $id)
             ->get()
@@ -29,6 +30,7 @@ class CarrinhoIndexResource extends JsonResource
                     'id' => $item->PRODUTO_ID,
                     'name' => $item->PRODUTO_NOME,
                     'quantity' => $item->ITEM_QTD,
+                    'stock' => $item->PRODUTO_QTD,
                     'price' => $item->PRODUTO_PRECO,
                     'image' => $item->IMAGEM->first()->IMAGEM_URL ?? null
                 ];
