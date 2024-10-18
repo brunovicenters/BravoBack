@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CarrinhoDeleteResource;
 use App\Http\Resources\CarrinhoIndexResource;
 use App\Http\Resources\CarrinhoStoreResource;
 use App\Http\Resources\CarrinhoUpdateResource;
+use App\Models\Carrinho;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 
@@ -59,5 +61,13 @@ class CarrinhoController extends Controller
     }
 
     // Remove item from cart
-    public function destroy(Request $request) {}
+    public function destroy(Request $request)
+    {
+        $item = [
+            'USUARIO_ID' => $request->header('user'),
+            'PRODUTO_ID' => $request->produtoId
+        ];
+
+        return new CarrinhoDeleteResource($item);
+    }
 }
