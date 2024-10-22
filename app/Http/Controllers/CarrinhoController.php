@@ -68,8 +68,6 @@ class CarrinhoController extends Controller
             'PRODUTO_ID' => $produto
         ];
 
-        dd($item);
-
         return new CarrinhoDeleteResource($item);
     }
 }
