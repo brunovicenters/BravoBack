@@ -17,7 +17,7 @@ class CarrinhoDeleteResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        if (Produto::find($request->produtoId) == null) {
+        if (Produto::find($this["PRODUTO_ID"]) == null) {
             throw new \Exception("Produto não existente!");
         }
 
