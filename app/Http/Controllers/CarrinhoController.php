@@ -61,12 +61,14 @@ class CarrinhoController extends Controller
     }
 
     // Remove item from cart
-    public function destroy(Request $request)
+    public function destroy(Request $request, $produto)
     {
         $item = [
             'USUARIO_ID' => $request->header('user'),
-            'PRODUTO_ID' => $request->produtoId
+            'PRODUTO_ID' => $produto
         ];
+
+        dd($item);
 
         return new CarrinhoDeleteResource($item);
     }
