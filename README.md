@@ -352,3 +352,37 @@ The body of your request must follow this structure:
     }
 }
 ```
+
+### Update Cart
+
+![AuthUser](https://img.shields.io/badge/AuthUser-yellow)
+
+``` /carrinho/{id} ```
+
+**Method:**
+
+```http
+PUT
+```
+
+**req:**
+
+The body of your request must follow this structure:
+
+- `Insert Cart` model can be found in the [Insert Cart](#insert-cart) section.
+
+```json
+{
+    Insert Cart
+}
+```
+
+**res:**
+
+```json
+{
+    "data": {
+        "msg": String
+    }
+}
+```
