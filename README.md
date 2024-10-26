@@ -386,3 +386,33 @@ The body of your request must follow this structure:
     }
 }
 ```
+
+### Delete Cart
+
+![AuthUser](https://img.shields.io/badge/AuthUser-yellow)
+
+``` /carrinho/{id} ```
+
+**Method:**
+
+```http
+DELETE
+```
+
+**req:**
+
+The body of your request must follow this structure:
+
+```json
+{}
+```
+
+**res:**
+
+```json
+{
+    "data": {
+        "msg": String
+    }
+}
+```
