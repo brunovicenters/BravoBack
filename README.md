@@ -21,7 +21,7 @@ The API has some common Models that appears in our responses, so, for convenienc
 }
 ```
 
-### SimpleCategory
+### Simple Category
 
 ```json
 {
@@ -52,6 +52,29 @@ The API has some common Models that appears in our responses, so, for convenienc
     "imagem": [
         Imagem
     ]
+}
+```
+
+### Insert Cart
+
+```json
+{
+    "produtoId": Int,
+    "quantity": Int,
+}
+```
+
+### Cart Product
+
+```json
+{
+    "id": Int,
+    "name": String,
+    "quantity": Int,
+    "stock": Int,
+    "price": String,
+    "image": String,
+    "changedQty": Boolean
 }
 ```
 
@@ -95,7 +118,7 @@ GET
 
 - `Product` model can be found in the [Product](#product) section.
 
-- `SimpleCategory` model can be found in the [SimpleCategory](#simplecategory) section.
+- `Simple Category` model can be found in the [Simple Category](#simple-category) section.
 
 ```json
 {
@@ -107,7 +130,7 @@ GET
             Product
         ],
         "categoriasMaisVendidas": [
-            "categoria": SimpleCategory,
+            "categoria": Simple Category,
             "produtos": [
                 Product
             ]
@@ -264,7 +287,9 @@ The body of your request must follow this structure:
 
 ### Store Cart
 
-``` /profile ```
+![AuthUser](https://img.shields.io/badge/AuthUser-yellow)
+
+``` /carrinho ```
 
 **Method:**
 
@@ -276,10 +301,11 @@ POST
 
 The body of your request must follow this structure:
 
+- `Insert Cart` model can be found in the [Insert Cart](#insert-cart) section.
+
 ```json
 {
-    "produtoId": Int,
-    "quantity": Int,
+    Insert Cart
 }
 ```
 
@@ -289,6 +315,40 @@ The body of your request must follow this structure:
 {
     "data": {
         "msg": String
+    }
+}
+```
+
+### Index Cart
+
+![AuthUser](https://img.shields.io/badge/AuthUser-yellow)
+
+``` /carrinho ```
+
+**Method:**
+
+```http
+GET
+```
+
+**req:**
+
+The body of your request must follow this structure:
+
+```json
+{}
+```
+
+**res:**
+
+- `Cart Product` model can be found in the [Cart Product](#cart-product) section.
+
+```json
+{
+    "data": {
+        "carrinho": [
+            Cart Product
+        ]
     }
 }
 ```
