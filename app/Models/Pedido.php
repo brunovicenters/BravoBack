@@ -17,7 +17,12 @@ class Pedido extends Model
 
     public function Usuario()
     {
-        return $this->hasOne(Usuario::class, "USUARIO_ID", "USUARIO_ID");
+        return $this->belongsTo(Usuario::class, "USUARIO_ID", "USUARIO_ID");
+    }
+
+    public function Endereco()
+    {
+        return $this->belongsTo(Endereco::class, "ENDERECO_ID", "ENDERECO_ID");
     }
 
     public function Itens()
@@ -27,6 +32,6 @@ class Pedido extends Model
 
     public function Status()
     {
-        return $this->hasOne(Status::class, "STATUS_ID", "STATUS_ID");
+        return $this->belongsTo(Status::class, "STATUS_ID", "STATUS_ID");
     }
 }

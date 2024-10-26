@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CarrinhoDeleteResource;
 use App\Http\Resources\CarrinhoIndexResource;
+use App\Http\Resources\CarrinhoFinalCartResource;
 use App\Http\Resources\CarrinhoStoreResource;
 use App\Http\Resources\CarrinhoUpdateResource;
 use App\Models\Carrinho;
@@ -69,5 +70,11 @@ class CarrinhoController extends Controller
         ];
 
         return new CarrinhoDeleteResource($item);
+    }
+
+    // Return all items that are selected in cart
+    public function finalCart(Request $request)
+    {
+        return new CarrinhoFinalCartResource($request);
     }
 }

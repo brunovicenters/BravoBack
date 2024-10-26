@@ -30,6 +30,11 @@ class Produto extends Model
         return $this->hasOne(Produto_Estoque::class, 'PRODUTO_ID', 'PRODUTO_ID');
     }
 
+    public function Carrinho()
+    {
+        return $this->hasMany(Carrinho::class, 'PRODUTO_ID', 'PRODUTO_ID');
+    }
+
     public function PedidoItem()
     {
         return $this->hasMany(Pedido_Item::class, 'PRODUTO_ID', 'PRODUTO_ID');
