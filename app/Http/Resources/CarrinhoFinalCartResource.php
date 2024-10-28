@@ -62,7 +62,7 @@ class CarrinhoFinalCartResource extends JsonResource
             ->map(function ($item) {
                 return [
                     "enderecoId" => $item->ENDERECO_ID,
-                    "street" => $item->ENDERECO_RUA,
+                    "logradouro" => $item->ENDERECO_LOGRADOURO,
                     "nome" => $item->ENDERECO_NOME
                 ];
             });
