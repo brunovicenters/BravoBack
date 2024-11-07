@@ -20,8 +20,7 @@ class PedidoIndexResource extends JsonResource
 
         $pedidos = Pedido::where('USUARIO_ID', $id)
             ->with('Status')
-            ->with('Endereco')
-            ->with('Itens.Produto')
+            ->with('Itens')
             ->get()
             ->map(function ($item) {
 
@@ -37,17 +36,7 @@ class PedidoIndexResource extends JsonResource
                     'id' => $item->PEDIDO_ID,
                     'status' => $item->STATUS->STATUS_DESC,
                     'data' => $item->PEDIDO_DATA,
-                    'endereco' => $item->Endereco->first()->ENDERECO_NOME . " - " . $item->Endereco->first()->ENDERECO_LOGRADOURO,
-                    'total' => $total,
-                    'itens' => $item->Itens->map(function ($item) {
-                        return [
-                            'id' => $item->PRODUTO_ID,
-                            'imagem' => $item->PRODUTO->PRODUTO_IMAGEM ?? null,
-                            'nome' => $item->PRODUTO->PRODUTO_NOME,
-                            'preco' => $item->ITEM_PRECO,
-                            'qtd' => $item->ITEM_QTD
-                        ];
-                    })->toArray()
+                    'total' => $total
                 ];
             });
 
