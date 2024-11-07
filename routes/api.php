@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CarrinhoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::middleware([AuthUser::class])->group(function () {
 
     Route::resource('/carrinho', CarrinhoController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::post('/carrinho/finalizar', [CarrinhoController::class, 'finalCart']);
+
+    Route::resource('/pedido', PedidoController::class)->only(['index', 'show', 'store', 'update']);
 });
 
 require __DIR__ . '/auth.php';
