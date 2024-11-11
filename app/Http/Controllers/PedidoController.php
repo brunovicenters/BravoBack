@@ -17,21 +17,6 @@ class PedidoController extends Controller
 
     public function store(Request $request)
     {
-
-        // // dd($request);
-        // $request->validate([
-        //     'endereco' => 'required|integer',
-        //     'produtos' => 'required|array',
-        //     'produtos.*.id' => 'required|integer|exists:PRODUTO,PRODUTO_ID',
-        //     'produtos.*.quantidade' => 'required|integer|min:1',
-        //     'produtos.*.preco' => 'required|numeric|min:0.01',
-        // ]);
-
-        // $req = [
-        //     'userId' => $request->header('user'),
-        //     'pedido' => $request->all(),
-        // ];
-
         return new PedidoStoreResource($request);
     }
 
