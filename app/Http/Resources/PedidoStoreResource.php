@@ -2,8 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Carrinho;
 use App\Models\Pedido;
 use App\Models\Pedido_Item;
+use App\Models\Produto;
+use App\Models\Produto_Estoque;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,6 +28,38 @@ class PedidoStoreResource extends JsonResource
             'produtos.*.preco' => 'required|numeric|min:0.01',
         ]);
 
+        $produtosCarrinhoIds = [];
+
+        foreach ($request->produtos as $key => $value) {
+            $produtosCarrinhoIds[] = $value['id'];
+        }
+
+        $qtyProdutos = [];
+
+        foreach ($request->produtos as $key => $value) {
+            $qtyProdutos[$produtosCarrinhoIds[$key]] = $value['quantidade'];
+        }
+
+        $produtos = Produto::ProdutoValido()
+            ->join('PRODUTO_ESTOQUE', 'PRODUTO.PRODUTO_ID', '=', 'PRODUTO_ESTOQUE.PRODUTO_ID')
+            ->whereIn('PRODUTO_ID', $produtosCarrinhoIds)
+            ->get()
+            ->map(function ($prod) use ($qtyProdutos) {
+
+                if ($prod->PRODUTO_QTD < $qtyProdutos[$prod->PRODUTO_ID]) {
+                    return false;
+                }
+
+                return true;
+            });
+
+        if (in_array(false, $produtos->toArray())) {
+            return [
+                'pedido' => -1,
+                'message' => 'out of stock',
+            ];
+        }
+
         $pedido = Pedido::create([
             'ENDERECO_ID' => $request->endereco,
             'USUARIO_ID' => $request->header('user'),
@@ -41,9 +76,18 @@ class PedidoStoreResource extends JsonResource
             ]);
         }
 
+        foreach ($produtosCarrinhoIds as $key => $value) {
+            Produto_Estoque::where('PRODUTO_ID', $value)
+                ->decrement('PRODUTO_QTD', $qtyProdutos[$value]);
+        }
+
+        Carrinho::where('USUARIO_ID', $request->header('user'))
+            ->whereIn('PRODUTO_ID', $produtosCarrinhoIds)
+            ->delete();
+
         return [
             'pedido' => $pedido->PEDIDO_ID,
-            'status' => 200,
+            'message' => 'success',
         ];
     }
 }
