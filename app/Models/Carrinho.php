@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class Carrinho extends Model
 {
     use HasFactory;
-
-    use HasFactory;
     use HasCompositePrimaryKey;
 
 
@@ -20,7 +18,6 @@ class Carrinho extends Model
 
     protected $fillable = ['USUARIO_ID', 'PRODUTO_ID', 'ITEM_QTD'];
     public $timestamps = false;
-    protected $guarded = [];
     public $incrementing = false;
 
     public function Produto()
