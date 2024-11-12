@@ -23,4 +23,9 @@ class Pedido_Item extends Model
     {
         return $this->hasOne(Produto::class, "PRODUTO_ID", "PRODUTO_ID");
     }
+
+    public function Pedido()
+    {
+        return $this->belongsTo(Pedido::class, "PEDIDO_ID", "PEDIDO_ID");
+    }
 }

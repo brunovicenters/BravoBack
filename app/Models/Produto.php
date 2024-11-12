@@ -40,6 +40,12 @@ class Produto extends Model
         return $this->hasMany(Pedido_Item::class, 'PRODUTO_ID', 'PRODUTO_ID');
     }
 
+    public function Pedido()
+    {
+        return $this->belongsToMany(Pedido::class, 'PEDIDO_ITEM', 'PRODUTO_ID', 'PEDIDO_ID')
+            ->withPivot('ITEM_QTD', 'ITEM_PRECO');
+    }
+
     public function scopeProdutoValido($query)
     {
         return $query->join("CATEGORIA", "PRODUTO.CATEGORIA_ID", "=", "CATEGORIA.CATEGORIA_ID")

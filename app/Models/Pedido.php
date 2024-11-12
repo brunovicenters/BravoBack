@@ -34,4 +34,10 @@ class Pedido extends Model
     {
         return $this->belongsTo(Status::class, "STATUS_ID", "STATUS_ID");
     }
+
+    public function Produto()
+    {
+        return $this->belongsToMany(Produto::class, 'PEDIDO_ITEM', 'PEDIDO_ID', 'PRODUTO_ID')
+            ->withPivot('ITEM_QTD', 'ITEM_PRECO');
+    }
 }
