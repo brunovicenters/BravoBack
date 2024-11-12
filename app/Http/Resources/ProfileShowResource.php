@@ -26,32 +26,26 @@ class ProfileShowResource extends JsonResource
         $lastBuyIds = Pedido::where('USUARIO_ID', $user["id"])->get();
 
         if ($lastBuyIds->count() > 0) {
-            $arrayPedidosIds = $lastBuyIds->map(function ($item) {
-                return $item->PEDIDO_ID;
-            })->toArray();
-
-            $itens = Pedido_Item::whereIn('PEDIDO_ID', $arrayPedidosIds)->get();
-
-            $arrayItensId = $itens->map(function ($item) {
-                return $item->PRODUTO_ID;
-            })->toArray();
-
-            $compreNovamente = Produto::ProdutoValido()
-                ->whereIn('PRODUTO.PRODUTO_ID', $arrayItensId)
+            $compreNovamente = Pedido::orderBy('PEDIDO_DATA', 'desc')
+                ->with(['Produto' => function ($query) {
+                    $query->with('Imagem')
+                        ->select('PRODUTO.PRODUTO_ID as id', 'PRODUTO.PRODUTO_NOME as nome', 'PRODUTO.PRODUTO_PRECO as preco', 'PRODUTO.PRODUTO_DESCONTO as desconto')
+                        ->limit(10);
+                }])
                 ->get()
-                ->reverse()
-                ->values()
-                ->map(function ($produto) {
-                    return [
-                        'id' => $produto->PRODUTO_ID,
-                        'nome' => $produto->PRODUTO_NOME,
-                        'preco' => $produto->PRODUTO_PRECO,
-                        'desconto' => $produto->PRODUTO_DESCONTO,
-                        'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
-                    ];
-                });
-
-            $compreNovamente = $compreNovamente->take(10);
+                ->flatMap(function ($pedido) {
+                    return $pedido->Produto->map(function ($produto) {
+                        return [
+                            'id' => $produto->id,
+                            'nome' => $produto->nome,
+                            'preco' => $produto->preco,
+                            'desconto' => $produto->desconto,
+                            'imagem' => $produto->Imagem->first()->IMAGEM_URL ?? null,
+                        ];
+                    });
+                })
+                ->unique('id')
+                ->values();
         }
 
         return [
