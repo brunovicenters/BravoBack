@@ -42,7 +42,7 @@ class PedidoStoreResource extends JsonResource
 
         $produtos = Produto::ProdutoValido()
             ->join('PRODUTO_ESTOQUE', 'PRODUTO.PRODUTO_ID', '=', 'PRODUTO_ESTOQUE.PRODUTO_ID')
-            ->whereIn('PRODUTO_ID', $produtosCarrinhoIds)
+            ->whereIn('PRODUTO.PRODUTO_ID', $produtosCarrinhoIds)
             ->get()
             ->map(function ($prod) use ($qtyProdutos) {
 
