@@ -26,7 +26,7 @@ class ProfileShowResource extends JsonResource
         $lastBuyIds = Pedido::where('USUARIO_ID', $user["id"])->get();
 
         if ($lastBuyIds->count() > 0) {
-            $compreNovamente = Pedido::orderBy('PEDIDO_DATA', 'desc')
+            $compreNovamente = Pedido::orderBy('PEDIDO_ID', 'desc')
                 ->with(['Produto' => function ($query) {
                     $query->with('Imagem')
                         ->select('PRODUTO.PRODUTO_ID as id', 'PRODUTO.PRODUTO_NOME as nome', 'PRODUTO.PRODUTO_PRECO as preco', 'PRODUTO.PRODUTO_DESCONTO as desconto')
@@ -46,6 +46,8 @@ class ProfileShowResource extends JsonResource
                 })
                 ->unique('id')
                 ->values();
+
+            dd($compreNovamente);
         }
 
         return [
