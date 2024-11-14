@@ -46,8 +46,6 @@ class ProfileShowResource extends JsonResource
                 })
                 ->unique('id')
                 ->values();
-
-            dd($compreNovamente);
         }
 
         return [
